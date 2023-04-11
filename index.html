@@ -1,12 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+      integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <title>API Clipboard</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Prueba Github Pages</h1>
-</body>
+
+    <div id="card" style="border: 1px solid gold; border-radius: 10px;">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
+      tempora quas necessitatibus, consequuntur non sed magni aliquam nemo
+      quisquam, dolor rem beatae voluptatibus labore fuga suscipit explicabo
+      expedita neque modi.
+    </div>
+
+    <button id="buttonCopy">Press to copy</button>
+
+    <script>
+      const copyToClipboard = async (id) => {
+        const elementById = document.getElementById(id);
+        const canvas = await html2canvas(elementById);
+        canvas.toBlob((blob) => {
+          const blobToURL = URL.createObjectURL(blob);
+          if (navigator.clipboard) {
+            if (navigator.userAgent.includes("Firefox") && typeof ClipboardItem === "undefined") {
+              !confirm(
+                "Su navegador no admite la copia de imágenes en el portapapeles. Si usa Firefox, puede habilitarlo configurando dom.events.asyncClipboard.clipboardItem en true." +
+                  "\n" +
+                  "\n 1. En la barra de direcciones, vaya a 'about:config'" +
+                  "\n 2. Busque dom.events.asyncClipboard.clipboardItem y configúrelo en true" +
+                  "\n 3. Presione Aceptar y recargue esta página" +
+                  "\n" +
+                  "\n* Si presiona 'Cancelar', se abrirá una nueva pestaña con la imagen descargable."
+              ) && window.open(blobToURL, "_blank");
+              return;
+            }
+            navigator.clipboard
+              .write([
+                new ClipboardItem({
+                  [blob.type]: blob,
+                }),
+              ])
+              .then(() => {
+                alert("Se ha copiado la imagen!");
+              })
+              .catch((error) => {
+                alert("Error: " + error + ".");
+              });
+          } else {
+            window.open(blobToURL, "_blank");
+            if (navigator.userAgent.match(/iphone/i) || navigator.userAgent.match(/iPad/i)) {
+              // window.location.href = blobToURL
+              alert("iphone device");
+            }
+          }
+        });
+      }
+
+      const buttonCopy = document.getElementById("buttonCopy");
+      buttonCopy.addEventListener("click", () => {
+        try {
+            copyToClipboard('card');
+        } catch (error) {
+            alert(error);
+        }
+      });
+    </script>
+  </body>
 </html>
