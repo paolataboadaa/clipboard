@@ -24,13 +24,13 @@
     <button id="buttonCopy">Press to copy</button>
 
     <script>
-        const handlePermission = () => {
-            const permissionName = "clipboard-write"
-            navigator.permissions.query({ name: permissionName }).then((result) => {
-                console.log("handlePermission", result)
-            })
-        }
-        handlePermission()
+        // const handlePermission = () => {
+        //     const permissionName = "clipboard-write"
+        //     navigator.permissions.query({ name: permissionName }).then((result) => {
+        //         console.log("handlePermission", result)
+        //     })
+        // }
+        // handlePermission()
 
         const copyToClipboard = async (id) => {
             const elementById = document.getElementById(id);
@@ -81,18 +81,18 @@
         const handleImage = (id) => {
             const elementById = document.getElementById(id)
             const item = new ClipboardItem({
-            "image/png": new Promise(async (resolve, reject) => {
-                try {
-                    const canvas = await html2canvas(elementById)
-                    canvas.toBlob((blob) => {
-                        resolve(new Blob([blob], { type: "image/png" }))
-                    })
-                } catch (err) {
-                    reject(err)
-                }
-            }),
-        })
-        navigator.clipboard.write([item])
+                "image/png": new Promise(async (resolve, reject) => {
+                    try {
+                        const canvas = await html2canvas(elementById)
+                        canvas.toBlob((blob) => {
+                            resolve(new Blob([blob], { type: "image/png" }))
+                        })
+                    } catch (err) {
+                        reject(err)
+                    }
+                }),
+            })
+            navigator.clipboard.write([item])
         }
     </script>
 </body>
