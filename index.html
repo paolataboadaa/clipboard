@@ -58,6 +58,7 @@
                         ])
                         .then(() => {
                             alert("Se ha copiado la imagen!");
+                            console.log("Se ha copiado la imagen!");
                         })
                         .catch((error) => {
                             alert("Error: " + error);
@@ -74,24 +75,24 @@
 
         const buttonCopy = document.getElementById("buttonCopy");
         buttonCopy.addEventListener("click", () => {
-            try {
-                handleImage('card');
-            } catch (error) {
-                alert(error);
-            }
+            handleImage('card');
         });
 
         const handleImage = (id) => {
             const elementById = document.getElementById(id)
-            html2canvas(elementById).then((canvas) => {
-                canvas.toBlob((blob) => {
-                    navigator.clipboard.write([
-                        new ClipboardItem({
-                            [blob.type]: blob,
-                        }),
-                    ])
-                })
-            }).catch((error) => alert('Handle error: ' + error))
+            const item = new ClipboardItem({
+            "image/png": new Promise(async (resolve, reject) => {
+                try {
+                    const canvas = await html2canvas(elementById)
+                    canvas.toBlob((blob) => {
+                        resolve(new Blob([blob], { type: "image/png" }))
+                    })
+                } catch (err) {
+                    reject(err)
+                }
+            }),
+        })
+        navigator.clipboard.write([item])
         }
     </script>
 </body>
