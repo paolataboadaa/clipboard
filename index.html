@@ -93,10 +93,8 @@
                 }),
             })
             navigator.clipboard.write([item]).then((response) => {
-                alert('Imagen copiada')
-                setTimeout(() => {
-                    clipboardRead()
-                }, 500);
+                console.log('Imagen copiada')
+                clipboardRead()
             }).catch((error) => alert('Error :c ' + error))
         }
 
@@ -105,7 +103,7 @@
                 .read()
                 .then(async (clipboardItems) => {
                     const blobOutput = await clipboardItems[0].getType(clipboardItems[0].types[0])
-                    alert("Imagen desde Clipboard Read: " + URL.createObjectURL(blobOutput))
+                    console.log("Imagen desde Clipboard Read: " + URL.createObjectURL(blobOutput))
                     document.body.innerHTML += `
                         <div style="padding: 20px; border: 1px solid red">
                             <img src=${URL.createObjectURL(blobOutput)} alt="Imagen portapeles">
