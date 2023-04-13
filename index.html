@@ -14,7 +14,7 @@
 <body>
     <h1>Prueba Github Pages</h1>
 
-    <div id="card" style="border: 1px solid gold; border-radius: 10px;">
+    <div id="card" style="border: 2px solid gold; border-radius: 10px; padding: 20px; margin: 20px;">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
         tempora quas necessitatibus, consequuntur non sed magni aliquam nemo
         quisquam, dolor rem beatae voluptatibus labore fuga suscipit explicabo
@@ -92,7 +92,29 @@
                     }
                 }),
             })
-            navigator.clipboard.write([item])
+            navigator.clipboard.write([item]).then((response) => {
+                alert('Imagen copiada')
+                setTimeout(() => {
+                    clipboardRead()
+                }, 500);
+            }).catch((error) => alert('Error :c ' + error))
+        }
+
+        const clipboardRead = () => {
+            navigator.clipboard
+                .read()
+                .then(async (clipboardItems) => {
+                    const blobOutput = await clipboardItems[0].getType(clipboardItems[0].types[0])
+                    alert("Imagen desde Clipboard Read: " + URL.createObjectURL(blobOutput))
+                    document.body.innerHTML += `
+                        <div style="padding: 20px; border: 1px solid red">
+                            <img src=${URL.createObjectURL(blobOutput)} alt="Imagen portapeles">
+                        </div>
+                    `;
+                })
+                .catch((error) => {
+                    alert("Error Clipboard Read: " + error)
+                })
         }
     </script>
 </body>
