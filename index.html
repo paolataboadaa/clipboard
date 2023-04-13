@@ -86,16 +86,18 @@
                         const canvas = await html2canvas(elementById)
                         canvas.toBlob((blob) => {
                             resolve(new Blob([blob], { type: "image/png" }))
+                            document.body.innerHTML += `
+                                <div style="padding: 20px; border: 1px solid red">
+                                    <img src=${URL.createObjectURL(blob)} alt="Imagen portapeles">
+                                </div>
+                            `;
                         })
                     } catch (err) {
                         reject(err)
                     }
                 }),
             })
-            navigator.clipboard.write([item]).then((response) => {
-                console.log('Imagen copiada')
-                clipboardRead()
-            }).catch((error) => alert('Error :c ' + error))
+            navigator.clipboard.write([item])
         }
 
         const clipboardRead = () => {
