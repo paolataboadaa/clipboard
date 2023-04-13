@@ -88,12 +88,17 @@
                             resolve(new Blob([blob], { type: "image/png" }))
                             document.body.innerHTML += `
                                 <div style="padding: 20px; border: 1px solid red">
-                                    <img src=${URL.createObjectURL(blob)} alt="Imagen portapeles">
+                                    <img src=${URL.createObjectURL(blob)} alt="Imagen portapapeles" style="max-width: 100%" />
                                 </div>
                             `;
                         })
                     } catch (err) {
                         reject(err)
+                        document.body.innerHTML += `
+                            <div style="padding: 20px; border: 1px solid red">
+                                <span>${err}</span>
+                            </div>
+                        `;
                     }
                 }),
             })
